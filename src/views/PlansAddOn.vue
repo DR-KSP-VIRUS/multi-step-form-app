@@ -22,11 +22,15 @@
 
 
 <script setup>
+import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import router from '@/router';
 import { useAddOnStore } from '@/stores/addOnServicesStore';
+import { usePlanStore } from '@/stores/planStore';
 import AddOnService from '../components/AddOnService.vue';
 import BottomNav from '../components/BottomNav.vue';
 
+const planStore = usePlanStore();
 const servicesStore = useAddOnStore();
 const { services } = storeToRefs(servicesStore)
 
@@ -43,6 +47,12 @@ const handleSelected = (evt) => {
         
     });
 }
+
+onMounted(() => {
+    if(!(planStore.isPlanSelected)) router.push('/plans')
+})
+
+
 
 </script>
 <style>

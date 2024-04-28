@@ -43,12 +43,18 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { usePlanStore } from '@/stores/planStore';
 import { useAddOnStore } from '@/stores/addOnServicesStore';
 import BottomNav from '../components/BottomNav.vue';
+import router from '@/router';
 
 const planStore = usePlanStore();
 const serviceStore = useAddOnStore();
+
+onMounted(() => {
+    if(!(planStore.isPlanSelected)) router.push('/plans')
+})
     
 </script>
 

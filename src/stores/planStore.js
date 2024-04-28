@@ -33,6 +33,11 @@ export const usePlanStore = defineStore("planStore", {
         ],
         selectedPlan: {}
     }),
+    getters: {
+        isPlanSelected() {
+            return Object.keys(this.selectedPlan).length != 0;
+        }
+    },
 
     actions: {
         addChangePricing(changedPlan) {
