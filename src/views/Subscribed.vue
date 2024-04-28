@@ -5,7 +5,7 @@
             <h3>Thank you!</h3>
             <p>
                 Thanks for confirming your subscription!
-                We hope you have fun usinf our platform. 
+                We hope you have fun using our platform. 
                 If you ever need support, please feel free to 
                 email us at support@loremgaming.com.
             </p>

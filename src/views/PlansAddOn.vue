@@ -4,7 +4,9 @@
             <h3>Pick add-ons</h3>
             <p>Add-ons help enhance your gaming experience</p>
             <ul class="add-ons">
-                <AddOnService :services="services" />
+                <AddOnService :services="services" 
+                    @selected="handleSelected"
+                />
             </ul>
         </div>
     </div>
@@ -20,34 +22,27 @@
 
 
 <script setup>
-    import { ref } from 'vue';
-    import AddOnService from '../components/AddOnService.vue';
-    import BottomNav from '../components/BottomNav.vue';
-    
-    // const nextLink = ref('');
-    const services = ref([
-        {
-            id: 1,
-            title: "Online services",
-            description: "Access to multiplayer games",
-            monthlyPrice: 1,
-            yearlyPrice: 10
-        },
-        {
-            id: 2,
-            title: "Larger storage",
-            description: "Extra 1TB of cloud save",
-            monthlyPrice: 2,
-            yearlyPrice: 20
-        },
-        {
-            id: 3,
-            title: "Customizable profile",
-            description: "Custom theme on your profile",
-            monthlyPrice: 2,
-            yearlyPrice: 20
+import { storeToRefs } from 'pinia';
+import { useAddOnStore } from '@/stores/addOnServicesStore';
+import AddOnService from '../components/AddOnService.vue';
+import BottomNav from '../components/BottomNav.vue';
+
+const servicesStore = useAddOnStore();
+const { services } = storeToRefs(servicesStore)
+
+
+const handleSelected = (evt) => {
+    services.value.find((service) => {
+        if (evt.target.checked && (service.id === +evt.target.name)) {
+            let selected = { ...service, active: true }
+            servicesStore.addSelectedServices(+evt.target.name,selected);
+        } else if (!evt.target.checked && (service.id === +evt.target.name)){
+            let selected ={ ...service, active: false }
+            servicesStore.addSelectedServices(+evt.target.name,selected);
         }
-    ]);
+        
+    });
+}
 
 </script>
 <style>

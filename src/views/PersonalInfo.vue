@@ -1,6 +1,5 @@
 <template>
     <div class="content">
-
         <div class="form-container">
             <h3>Personal info</h3>
             <p>Please provide your name, email,
@@ -53,8 +52,9 @@
 
 <script setup>
     import { ref } from 'vue';
+    import router from '@/router';
+    import { useUserStore } from '@/stores/userStore';
     import BottomNav from '../components/BottomNav.vue';
-import router from '@/router';
 
 
     const nextLink = ref('');
@@ -69,6 +69,8 @@ import router from '@/router';
         email: '',
         phone: ''
     });
+
+    const userStore = useUserStore();
 
     const validateFields = () => {
         for (const key in formData.value) {
@@ -92,6 +94,7 @@ import router from '@/router';
 
     const handleNextClick = () => {
         if (!isValidForm()) return;
+        userStore.addUser(formData);
         router.push('/plans');
     }
 </script>

@@ -6,14 +6,14 @@
                 yearly billing.
             </p>
             <ul class="plans">
-                <Plan :plans="plans" :duration="duration" @selected="handleSelected"
+                <Plan :plans="plans" @selected="handleSelected"
                     :selectedPlan="planSelected"
                 />
             </ul>
             <div class="duration">
                 <p>Monthly</p>
                 <label class="btn-switch">
-                    <input type="checkbox" class="input-check" v-model="duration">
+                    <input type="checkbox" class="input-check" @change="handleChange">
                     <span class="slider"></span>
                 </label>
                 <p>Yearly</p>
@@ -31,50 +31,40 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-    import Plan from '../components/Plan.vue';
-    import BottomNav from '../components/BottomNav.vue';
+import { ref, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { usePlanStore } from '@/stores/planStore';
+import { useUserStore } from '@/stores/userStore';
+import Plan from '../components/Plan.vue';
+import BottomNav from '../components/BottomNav.vue';
+import router from '@/router';
+
+const planSelected = ref({});
+const planStore = usePlanStore();
+const userStore = useUserStore()
+const { plans } = storeToRefs(planStore);
     
-    
-    // const nextLink = ref('');
-    const duration = ref(false);
-    const planSelected = ref({});
-    const plans = ref([
-        {
-            id: 1,
-            name: "Arcade",
-            monthlyPrice: 9,
-            yearlyPrice: 90,
-            photo: "/images/icon-arcade.svg"
-        },
-        {
-            id: 2,
-            name: "Advanced",
-            monthlyPrice: 12,
-            yearlyPrice: 120,
-            photo: "/images/icon-advanced.svg"
-        },
-        {
-            id: 3,
-            name: "Pro",
-            monthlyPrice: 15,
-            yearlyPrice: 150,
-            photo:"/images/icon-pro.svg",
+const handleSelected = (id) => {
+    planSelected.value = plans.value.find((plan) => plan.id === id);
+    planStore.addSelectedPlan(planSelected.value);
+}
+
+const handleChange = (event) => {
+    plans.value = plans.value.map((plan) => {
+        if (event.target.checked) {
+            return {...plan,duration:'yr',bonus: '2 months free'}
+        } else {
+            return {...plan,duration:'mo',bonus:''}
         }
-    ]);
+    })
+    planStore.addChangePricing(plans.value);
+    planSelected.value = {}
+}
+
+onMounted(() => {
+    if(userStore.users.length === 0) router.push('/')
+})
     
-    const handleSelected = (id) => {
-        // plans.value = plans.value.map((plan) => {
-            // if (plan.id === id){
-                // return {...plan,select:true}
-            // } else {
-                // return {...plan,select:false}
-            // }
-        // });
-
-        planSelected.value = plans.value.find((plan) => plan.id === id);
-
-    }
 </script>
 
 <style>

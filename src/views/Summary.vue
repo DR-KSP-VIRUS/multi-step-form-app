@@ -9,26 +9,26 @@
                 <li class="item-summary">
                     <div class="item">
                         <p class="plan-item">
-                        Arcade (Monthly)
+                        {{ planStore.selectedPlan.name }}
                         <RouterLink to="/plans">Change</RouterLink>
                         </p>
-                        <p>$90/yr</p>
+                        <p v-if="planStore.selectedPlan.duration === 'yr'">{{ planStore.selectedPlan.yearlyPrice }}/{{ planStore.selectedPlan.duration }}</p>
+                        <p v-else>{{ planStore.selectedPlan.monthlyPrice }}/{{ planStore.selectedPlan.duration }}</p>
                     </div>
-                    <ul class="services">
-                        <li class="service">
-                            <p class="service-type">Online</p>
-                            <p class="price">+$10/yr</p>
-                        </li>
-                        <li class="service">
-                            <p>Large Storage</p>
-                            <p class="price">+$20/yr</p>
+                    <ul class="services" v-for="service in serviceStore.services" :key="service.id">
+                        <li class="service" v-if="service.active">
+                            <p class="service-type">{{service.title}}</p>
+                            <p class="price" v-if="planStore.selectedPlan.duration === 'yr'">+${{ service.yearlyPrice }}/yr</p>
+                            <p v-else> +${{ service.monthlyPrice }}/{{ planStore.selectedPlan.duration }}</p>
                         </li>
                     </ul>
                 </li>
             </ul>
             <div class="total">
-                <p>Total (per year)</p>
-                <p class="total-amount">$120/yr</p>
+                <p v-if="planStore.selectedPlan.duration === 'yr'">Total (per year)</p>
+                <p v-else>Total (per month)</p>
+                <p class="total-amount" v-if=" planStore.selectedPlan.duration === 'yr' ">${{  (serviceStore.totalYearlyServiceCost+planStore.selectedPlan.yearlyPrice) }}/yr</p>
+                <p v-else> ${{  serviceStore.totalMonthlyServiceCost+planStore.selectedPlan.monthlyPrice }}</p>
             </div>
         </div>
     </div>
@@ -43,10 +43,12 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-    import BottomNav from '../components/BottomNav.vue';
+import { usePlanStore } from '@/stores/planStore';
+import { useAddOnStore } from '@/stores/addOnServicesStore';
+import BottomNav from '../components/BottomNav.vue';
 
-    // const nextLink = ref('');
+const planStore = usePlanStore();
+const serviceStore = useAddOnStore();
     
 </script>
 
