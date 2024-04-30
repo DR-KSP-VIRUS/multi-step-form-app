@@ -34,7 +34,7 @@ const emit = defineEmits(['selected']);
 
 onMounted(() => {
     services.value = services.value.map((service) => {
-        if (planStore.getSelectedPlan.duration === 'yr') {
+        if (planStore.getSelectedPlan && planStore.getSelectedPlan.duration === 'yr') {
             return { ...service, duration: 'yr' }
         } else {
             return { ...service, duration: 'mo' }

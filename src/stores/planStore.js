@@ -37,7 +37,7 @@ export const usePlanStore = defineStore("planStore", {
     }),
     getters: {
         isPlanSelected() {
-            return Object.keys(this.getSelectedPlan).length != 0;
+            return this.getSelectedPlan && Object.keys(this.getSelectedPlan) ? true : false;
         },
 
         getSelectedPlan() {

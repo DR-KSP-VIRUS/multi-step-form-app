@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content" v-if="planStore.getSelectedPlan">
         <div class="summary-container">
             <h3>Finishing up</h3>
             <p>Double-check everything looks OK

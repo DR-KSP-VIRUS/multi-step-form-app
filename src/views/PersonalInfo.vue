@@ -51,60 +51,60 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import router from '@/router';
-import { useUserStore } from '@/stores/userStore';
-import BottomNav from '../components/BottomNav.vue';
+    import { ref,onMounted } from 'vue';
+    import router from '@/router';
+    import { useUserStore } from '@/stores/userStore';
+    import BottomNav from '../components/BottomNav.vue';
 
 
-const nextLink = ref('');
-const formData = ref({
-    username: '',
-    email: '',
-    phone: ''
-});
-const errorField = ref({
-    username: '',
-    email: '',
-    phone: ''
-});
+    const nextLink = ref('');
+    const formData = ref({
+        username: '',
+        email: '',
+        phone: ''
+    });
 
-const userStore = useUserStore();
+    const errorField = ref({
+        username: '',
+        email: '',
+        phone: ''
+    });
 
-const validateFields = () => {
-    for (const key in formData.value) {
-        if (Object.hasOwnProperty.call(formData.value, key)) {
-            if (formData.value[key] === ''){
-                errorField.value[key] = "This field is required";
-            } else {
-                errorField.value[key] = '';
+    const userStore = useUserStore();
+
+    const validateFields = () => {
+        for (const key in formData.value) {
+            if (Object.hasOwnProperty.call(formData.value, key)) {
+                if (formData.value[key] === ''){
+                    errorField.value[key] = "This field is required";
+                } else {
+                    errorField.value[key] = '';
+                }
             }
         }
     }
-}
 
-const isValidForm = () => {
-    validateFields()
-    if (formData.value.username && formData.value.email && formData.valuephone){
-        return true;
+    const isValidForm = () => {
+        validateFields()
+        if (formData.value.username && formData.value.email && formData.value.phone){
+            return true;
+        }
+        return false
     }
-    return false
-}
 
-const handleNextClick = () => {
-    // console.log('fired')
-    // if (!isValidForm()) return;
-    userStore.addUser(formData.value);
-    router.push('/plans');
+    const handleNextClick = () => {
+        if (!isValidForm()) return;
+        userStore.addUser(formData);
+        router.push('/plans');
 }
 
 onMounted(() => {
     if (userStore.userExists) {
         formData.value.email = userStore.user.email;
-        formData.value.username = userStore.user.username;
         formData.value.phone = userStore.user.phone;
+        formData.value.username = userStore.user.username;
     }
-})
+});
 </script>
 
 
