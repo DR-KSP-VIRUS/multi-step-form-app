@@ -10,6 +10,7 @@ export const usePlanStore = defineStore("planStore", {
                 yearlyPrice: 90,
                 duration: 'mo',
                 bonus: '',
+                selected: false,
                 photo: "/images/icon-arcade.svg"
             },
             {
@@ -19,6 +20,7 @@ export const usePlanStore = defineStore("planStore", {
                 yearlyPrice: 120,
                 duration: 'mo',
                 bonus: '',
+                selected: false,
                 photo: "/images/icon-advanced.svg"
             },
             {
@@ -28,14 +30,18 @@ export const usePlanStore = defineStore("planStore", {
                 yearlyPrice: 150,
                 duration: 'mo',
                 bonus: '',
+                selected: false,
                 photo: "/images/icon-pro.svg",
             }
         ],
-        selectedPlan: {}
     }),
     getters: {
         isPlanSelected() {
-            return Object.keys(this.selectedPlan).length != 0;
+            return Object.keys(this.getSelectedPlan).length != 0;
+        },
+
+        getSelectedPlan() {
+            return this.plans.find(p => p.selected === true)
         }
     },
 
@@ -43,8 +49,8 @@ export const usePlanStore = defineStore("planStore", {
         addChangePricing(changedPlan) {
             this.plans = changedPlan;
         },
-        addSelectedPlan(plan) {
-            this.selectedPlan = plan;
+        addSelectedPlan(plans) {
+            this.plans = plans;
         }
     }
 });

@@ -6,14 +6,12 @@
                 yearly billing.
             </p>
             <ul class="plans">
-                <Plan :plans="plans" @selected="handleSelected"
-                    :selectedPlan="planSelected"
-                />
+                <Plan :plans="plans" @selected="handleSelected"/>
             </ul>
             <div class="duration">
                 <p>Monthly</p>
                 <label class="btn-switch">
-                    <input type="checkbox" class="input-check" @change="handleChange">
+                    <input type="checkbox" class="input-check" @change="handleChange" :checked="getSelectedPlan &&getSelectedPlan.duration==='yr'">
                     <span class="slider"></span>
                 </label>
                 <p>Yearly</p>
@@ -31,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePlanStore } from '@/stores/planStore';
 import { useUserStore } from '@/stores/userStore';
@@ -39,14 +37,19 @@ import Plan from '../components/Plan.vue';
 import BottomNav from '../components/BottomNav.vue';
 import router from '@/router';
 
-const planSelected = ref({});
 const planStore = usePlanStore();
 const userStore = useUserStore()
-const { plans } = storeToRefs(planStore);
+const { plans,getSelectedPlan} = storeToRefs(planStore);
     
 const handleSelected = (id) => {
-    planSelected.value = plans.value.find((plan) => plan.id === id);
-    planStore.addSelectedPlan(planSelected.value);
+    let selectedPlan = plans.value.map((plan) => {
+        if (plan.id === id) {
+            return {...plan,selected:true}
+        } else {
+            return {...plan,selected:false}
+        }
+    })
+    planStore.addSelectedPlan(selectedPlan);
 }
 
 const handleChange = (event) => {
@@ -58,11 +61,10 @@ const handleChange = (event) => {
         }
     })
     planStore.addChangePricing(plans.value);
-    planSelected.value = {}
 }
 
 onMounted(() => {
-    if(userStore.users.length === 0) router.push('/')
+    if(!userStore.userExists) router.push('/')
 })
     
 </script>

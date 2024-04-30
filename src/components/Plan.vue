@@ -1,5 +1,5 @@
 <template>
-    <li :class="selectedPlan.id === plan.id ? 'plan selected' : 'plan' " v-for="plan in plans" 
+    <li :class="plan.selected ? 'plan selected' : 'plan' " v-for="plan in plans" 
         :key="plan.id" @click="onSelected(plan.id)"
     >
         <img :src="plan.photo" :alt="'-icon'+plan.name">
@@ -21,10 +21,6 @@
             type:Array,
             required:true
         },
-        selectedPlan: {
-            type: Object,
-            required: true
-        }
     });
 
     const onSelected = (id) => {
