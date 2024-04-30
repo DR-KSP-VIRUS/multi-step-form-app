@@ -35,12 +35,12 @@ export const useAddOnStore = defineStore("addOnStore", {
     }),
     getters: {
         totalYearlyServiceCost() {
-            return this.services.filter(p => p.active === true).reduce((acc, service) => {
+            return this.services.filter(p => p.active).reduce((acc, service) => {
                 return acc += service.yearlyPrice
             }, 0)
         },
         totalMonthlyServiceCost() {
-            return this.services.filter(p => p.active === true).reduce((acc, service) => {
+            return this.services.filter(p => p.active).reduce((acc, service) => {
                 return acc += service.monthlyPrice
             }, 0)
         }

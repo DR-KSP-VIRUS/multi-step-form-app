@@ -41,7 +41,7 @@ export const usePlanStore = defineStore("planStore", {
         },
 
         getSelectedPlan() {
-            return this.plans.find(p => p.selected === true)
+            return this.plans.find(p => p.selected)
         }
     },
 

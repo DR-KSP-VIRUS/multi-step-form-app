@@ -94,7 +94,7 @@
 
     const handleNextClick = () => {
         if (!isValidForm()) return;
-        userStore.addUser(formData);
+        userStore.addUser(formData.value);
         router.push('/plans');
 }
 
