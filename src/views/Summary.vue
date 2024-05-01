@@ -28,7 +28,7 @@
                 <p v-if="planStore.getSelectedPlan.duration === 'yr'">Total (per year)</p>
                 <p v-else>Total (per month)</p>
                 <p class="total-amount" v-if=" planStore.getSelectedPlan.duration === 'yr' ">${{  (serviceStore.totalYearlyServiceCost+planStore.getSelectedPlan.yearlyPrice) }}/yr</p>
-                <p v-else> ${{  serviceStore.totalMonthlyServiceCost+planStore.getSelectedPlan.monthlyPrice }}</p>
+                <p v-else> ${{  serviceStore.totalMonthlyServiceCost+planStore.getSelectedPlan.monthlyPrice }}/mo</p>
             </div>
         </div>
     </div>
