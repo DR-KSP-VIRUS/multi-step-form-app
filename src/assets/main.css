@@ -70,7 +70,7 @@ main {
 
   /* small devices sm */
   .content {
-    top: 15%;
+    top: 16%;
   }
 }
 
@@ -78,7 +78,7 @@ main {
 
   /* medium device md */
   .content {
-    top: 20%;
+    top: 13%;
   }
 
 }
@@ -87,16 +87,11 @@ main {
 
   /* medium device md  */
   .content {
-    top: 15%;
+    top: 14%;
   }
 
 }
 
-@media screen and (min-width:540px) {
-  .content {
-    top: 20%;
-  }
-}
 
 @media screen and (min-width:774px) {
   .content {
